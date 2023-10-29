@@ -16,8 +16,8 @@ import java.util.HashMap;
 public class FilmController {
     HashMap<Long, Film> films = new HashMap<>();
     private long id = 1;
-    private final int MAX_LENGTH_DESCRIPTION = 200;
-    private final LocalDate RELEASE_DATE = LocalDate.parse("1895-12-28", DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    private final int MAXLENGTHDESCRIPTION = 200;
+    private final LocalDate RELEASEDATE = LocalDate.parse("1895-12-28", DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
     @GetMapping("/films")
     public Collection<Film> allFilms() {
@@ -33,10 +33,10 @@ public class FilmController {
             if (film.getName().isEmpty()) {
                 log.debug("Фильм не добавлен. Название фильма пуст");
                 throw new ValidationException();
-            } else if (film.getDescription().length() > MAX_LENGTH_DESCRIPTION) {
+            } else if (film.getDescription().length() > MAXLENGTHDESCRIPTION) {
                 log.debug("Фильм не добавлен. Длина описания более 200 символов");
                 throw new ValidationException();
-            } else if (film.getReleaseDate().isBefore(RELEASE_DATE)) {
+            } else if (film.getReleaseDate().isBefore(RELEASEDATE)) {
                 log.debug("Фильм не добавлен. Дата релиза раньше, чем 28 декабря 1895 года");
                 throw new ValidationException();
             } else if (film.getDuration() < 0) {
@@ -56,10 +56,10 @@ public class FilmController {
             if (film.getName().isEmpty()) {
                 log.debug("Фильм не добавлен или не обновлен. Название пустое");
                 throw new ValidationException();
-            } else if (film.getDescription().length() > MAX_LENGTH_DESCRIPTION) {
+            } else if (film.getDescription().length() > MAXLENGTHDESCRIPTION) {
                 log.debug("Фильм не добавлен или не обновлен. Длина описания более 200 символов");
                 throw new ValidationException();
-            } else if (film.getReleaseDate().isBefore(RELEASE_DATE)) {
+            } else if (film.getReleaseDate().isBefore(RELEASEDATE)) {
                 log.debug("Фильм не добавлен или не обновлен. Дата релиза раньше, чем 28 декабря 1985 года");
                 throw new ValidationException();
             } else if (film.getDuration() < 0) {
