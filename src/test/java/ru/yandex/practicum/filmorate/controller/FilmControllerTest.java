@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 @Data
 class FilmControllerTest {
-    FilmController filmController = new FilmController();
+    private FilmController filmController = new FilmController();
 
     @Test
     @Builder
@@ -59,7 +59,7 @@ class FilmControllerTest {
         Assertions.assertEquals(filmController.createFilm(film1).getId(), 1L, "Фильм не добавился");
         film1.setName("Красотка");
 
-        Assertions.assertEquals(filmController.films.get(film1.getId()).getName(), "Красотка", "Данные фильма не обновились");
+        Assertions.assertEquals(filmController.getFilms().get(film1.getId()).getName(), "Красотка", "Данные фильма не обновились");
 
     }
 }

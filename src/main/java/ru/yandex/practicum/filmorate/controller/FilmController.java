@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -13,8 +14,10 @@ import java.util.HashMap;
 @RestController
 @RequestMapping
 @Slf4j
+@Data
 public class FilmController {
-    HashMap<Long, Film> films = new HashMap<>();
+
+    private HashMap<Long, Film> films = new HashMap<>();
     private long id = 1;
     private static final int MAX_LENGTH_DESCRIPTION = 200;
     private static final LocalDate RELEASE_DATE = LocalDate.parse("1895-12-28", DateTimeFormatter.ofPattern("yyyy-MM-dd"));

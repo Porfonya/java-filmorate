@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -12,9 +13,10 @@ import java.util.HashMap;
 @RestController
 @RequestMapping
 @Slf4j
+@Data
 public class UserController {
 
-    HashMap<Long, User> users = new HashMap<>();
+    private HashMap<Long, User> users = new HashMap<>();
     private long id = 1;
 
     @GetMapping("/users")

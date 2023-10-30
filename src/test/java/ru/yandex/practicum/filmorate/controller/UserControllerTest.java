@@ -8,7 +8,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.time.LocalDate;
 
 class UserControllerTest {
-    UserController userController = new UserController();
+    private final UserController userController = new UserController();
 
     @Test
     void allUsers() throws ValidationException {
@@ -54,7 +54,7 @@ class UserControllerTest {
                 .build();
         Assertions.assertEquals(userController.createUser(user2).getId(), 1, "Пользователь не добавился");
         user2.setName("Porf");
-        Assertions.assertEquals(userController.users.get(user2.getId()).getName(), "Porf",
+        Assertions.assertEquals(userController.getUsers().get(user2.getId()).getName(), "Porf",
                 "Данные пользователя обновились");
     }
 }
