@@ -20,9 +20,10 @@ public class ErrorHandler {
     public ResponseEntity<String> handleNotFoundException(final NotFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler
-    public ResponseEntity<String> handleInternalServiceException(final InternalServiceException exception) {
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<String> handleInternalServiceException(final InternalServiceException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
