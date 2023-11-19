@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.model;
 
-import lombok.Builder;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
@@ -11,7 +10,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@Builder
 public class Film {
     private Long id;
 
