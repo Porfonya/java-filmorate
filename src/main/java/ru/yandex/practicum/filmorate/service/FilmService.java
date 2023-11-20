@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 @Service
 public class FilmService {
 
-    InMemoryFilmStorage filmStorage;
-    InMemoryUserStorage userStorage;
+    private InMemoryFilmStorage filmStorage;
+    private InMemoryUserStorage userStorage;
 
 
     public FilmService(InMemoryFilmStorage filmStorage, InMemoryUserStorage userStorage) {

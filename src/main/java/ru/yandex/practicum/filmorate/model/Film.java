@@ -15,7 +15,7 @@ public class Film {
 
     @NotBlank(message = "Имя не может быть пустым")
     private String name;
-    @NotBlank(message = "Описание не может быть путым")
+    @NotBlank(message = "Описание не может быть пустым")
     @Length(max = 200, message = "Максимальная длина описания 200 символов")
     private String description;
 
