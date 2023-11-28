@@ -2,78 +2,79 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
 
-import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashMap;
+import javax.validation.Valid;
+import java.util.*;
+
 
 @RestController
-@RequestMapping
+@Validated
 @Slf4j
 @Data
+@RequestMapping("/users")
 public class UserController {
 
-    private HashMap<Long, User> users = new HashMap<>();
-    private long id = 1;
+    private final UserService userService;
 
-    @GetMapping("/users")
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping
+    public User create(@RequestBody @Valid User user) throws NotFoundException {
+        return userService.create(user);
+    }
+
+    @PutMapping
+    public User update(@RequestBody @Valid User user) throws NotFoundException, ValidationException {
+
+        return userService.update(user);
+    }
+
+    @GetMapping
     public Collection<User> allUsers() {
-        log.debug("Пользователей добавлено: " + users.size());
-        return users.values();
+        return userService.allUsers();
     }
 
-    @PostMapping(value = "/users")
-    public User createUser(@RequestBody User user) throws ValidationException {
-
-        if (!users.containsKey(user.getId())) {
-            user.setId(id);
-
-            if (user.getEmail().isBlank() || !user.getEmail().contains("@")) {
-                log.debug("Пользователь не создан. Электронная почта не может быть пустой и должна содержать символ @");
-                throw new ValidationException();
-            } else if (user.getLogin().isBlank()) {
-                log.debug("Пользователь не создан. Электронная почта не может быть пустой и должна содержать символ @ ");
-                throw new ValidationException();
-            } else if (user.getBirthday().isAfter(LocalDate.now())) {
-                log.debug("Пользователь не создан. Дата рождения не может быть в будущем");
-                throw new ValidationException();
-            }
-            if (user.getName() == null) {
-                user.setName(user.getLogin());
-            }
-            users.put(user.getId(), user);
-            id++;
-        }
-        return user;
+    @GetMapping("/{id}")
+    public User getById(@PathVariable("id") Long id) throws NotFoundException {
+        return userService.getUserById(id);
     }
 
-    @PutMapping(value = "/users")
-    public User updateUser(@RequestBody User user) throws ValidationException {
-        if (users.containsKey(user.getId())) {
-            if (user.getEmail().isBlank() || !user.getEmail().contains("@")) {
-                log.debug("Пользователь не создан/не обновлен. Электронная почта не может быть пустой и должна содержать символ @");
-                throw new ValidationException();
-            } else if (user.getLogin().isBlank() || user.getLogin().contains(" ")) {
-                log.debug("Пользователь не создан/не обновлен. Логин не может быть пустым и содержать пробелы");
-                throw new ValidationException();
-            } else if (user.getBirthday().isAfter(LocalDate.now())) {
-                log.debug("Пользователь не создан/не обновлен. Дата рождения не может быть в будущем");
-                throw new ValidationException();
-            } else {
-
-                log.debug("Пользователь c id: " + user.getId() + " обновлен");
-                users.put(user.getId(), user);
-
-            }
+    @PutMapping(value = "/{id}/friends/{friendId}")
+    public void addToFriends(@Valid @PathVariable("id") Long id,
+                             @PathVariable(value = "friendId",
+                                     required = false) Long friendId) throws NotFoundException {
+        if (id <= 0 || friendId <= 0) {
+            throw new NotFoundException("404");
         } else {
-            log.debug("Такого пользователя нет");
-            throw new ValidationException();
+            log.info(String.format("Добавлен новый друг с id %d", id));
+            userService.addToFriends(id, friendId);
         }
+    }
 
-        return user;
+    @DeleteMapping(value = "/{id}/friends/{friendId}")
+    public void removeFromFriends(@Valid @PathVariable(required = false) Long id,
+                                  @Valid @PathVariable(required = false) Long friendId) {
+        log.info(String.format("Удален друг с id %d", id));
+        userService.removeFromFriends(id, friendId);
+    }
+
+    @GetMapping(value = "/{id}/friends")
+    public List<User> getFriends(@PathVariable("id") long id) {
+        return userService.getAllFriends(id);
+    }
+
+    @GetMapping(value = "/{id}/friends/common/{otherId}")
+    public Set<User> getCommonFriends(@PathVariable("id") Long id,
+                                      @PathVariable("otherId") Long otherId) throws NotFoundException {
+        return userService.getCommonFriends(id, otherId);
     }
 }
 
