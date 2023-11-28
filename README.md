@@ -1,7 +1,7 @@
 # java-filmorate
 Template repository for Filmorate project.
 
-![img.png](img.png)
+![img_1.png](img_1.png)
 
 ```
 SELECT *
