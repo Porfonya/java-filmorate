@@ -30,11 +30,6 @@ public class LikesDaoImpl implements LikesDao {
 
     }
 
-    public Collection<Like> allLikes() {
-        String sqlQuery = "SELECT * FROM LIKES";
-        return this.jdbcTemplate.query(sqlQuery, likesRowMapper());
-    }
-
     @Override
     public void dislike(Long filmId, Long userId) {
         jdbcTemplate.update("DELETE FROM LIKES WHERE FILMS_ID = ? AND USER_ID = ?", filmId, userId);
@@ -52,7 +47,7 @@ public class LikesDaoImpl implements LikesDao {
 
     }
 
-    private final RowMapper<Film> filmRowMapper() {
+    private RowMapper<Film> filmRowMapper() {
         return (rs, rowNum) -> new Film(
                 rs.getLong("FILM_ID"),
                 rs.getString("FILM_NAME"),
@@ -62,7 +57,7 @@ public class LikesDaoImpl implements LikesDao {
                 new Mpa(rs.getLong("MPA_ID"), rs.getString("MPA_NAME")));
     }
 
-    private final RowMapper<Like> likesRowMapper() {
+    private RowMapper<Like> likesRowMapper() {
         return (rs, rowNum) -> new Like(
                 rs.getLong("FILMS_ID"),
                 rs.getLong("USER_ID"));
