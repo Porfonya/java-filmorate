@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage;
+package ru.yandex.practicum.filmorate.storage.local;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.interfaces.UserStorage;
 
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 
 @Component()
 @Data
@@ -18,6 +18,7 @@ public class InMemoryUserStorage implements UserStorage {
 
     private final HashMap<Long, User> users;
     private static Long id = 1L;
+    private Set<Long> friends = new HashSet<>();
 
     public InMemoryUserStorage() {
         this.users = new HashMap<>();
@@ -53,11 +54,12 @@ public class InMemoryUserStorage implements UserStorage {
         if (users.containsKey(user.getId())) {
             log.info(String.format("Пользователь с id %d обновлен", user.getId()));
             users.put(user.getId(), user);
+            return user;
         } else {
             log.info("Пользователя нет в базе");
             throw new NotFoundException("404");
         }
-        return user;
+
 
     }
 

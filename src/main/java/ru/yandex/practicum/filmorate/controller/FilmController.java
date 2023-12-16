@@ -1,6 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +8,7 @@ import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.service.LikesService;
 
 import javax.validation.Valid;
 import java.util.*;
@@ -16,12 +17,11 @@ import java.util.*;
 @RestController
 @Validated
 @Slf4j
-@Data
+@RequiredArgsConstructor
 @RequestMapping("/films")
 public class FilmController {
-
-
     private final FilmService filmService;
+    private final LikesService likesService;
 
     @GetMapping
     public Collection<Film> allFilms() {
@@ -30,8 +30,9 @@ public class FilmController {
     }
 
     @PostMapping
-    public Film create(@RequestBody @Valid Film film) throws NotFoundException {
+    public Film create(@RequestBody @Valid Film film) {
         return filmService.create(film);
+
     }
 
     @PutMapping
@@ -51,7 +52,7 @@ public class FilmController {
             throw new NotFoundException("404");
         }
         log.info("Пользователь добавил лайк");
-        filmService.addLike(id, userId);
+        likesService.addLike(id, userId);
     }
 
     @DeleteMapping("/{id}/like/{userId}")
@@ -60,13 +61,13 @@ public class FilmController {
             throw new NotFoundException("404");
         }
         log.info("Пользователь удалил лайк");
-        filmService.removeLike(id, userId);
+        likesService.removeLike(id, userId);
     }
 
     @GetMapping("/popular")
-    public List<Film> getBestFilms(@RequestParam(defaultValue = "10", required = false) int count) {
+    public Collection<Film> getBestFilms(@RequestParam(defaultValue = "10") Integer count) {
 
-        return filmService.getBestFilms(count);
+        return likesService.getPopular(count);
     }
 }
 

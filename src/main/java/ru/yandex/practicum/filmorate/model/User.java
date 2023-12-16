@@ -1,20 +1,26 @@
 package ru.yandex.practicum.filmorate.model;
 
-import lombok.Data;
+import lombok.*;
+import org.springframework.data.annotation.Id;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
-
+    @Id
+    @Min(1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Set<Long> friends = new HashSet<>();
+
     @Email(message = "Email должен быть валидным")
     @NotBlank(message = "Email должен быть не пустым")
-    String email;
+    private String email;
 
     @NotBlank(message = "Login логин должен быть не пустым")
     @Pattern(regexp = "\\S+", message = "Ошибка при вводе логина")
@@ -24,6 +30,5 @@ public class User {
 
     @Past(message = "Дата рождения не может быть в будущем")
     private LocalDate birthday;
-
 
 }
