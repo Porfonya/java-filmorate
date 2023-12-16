@@ -10,7 +10,6 @@ import ru.yandex.practicum.filmorate.model.Like;
 import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.storage.interfaces.LikesDao;
 
-import java.util.Collection;
 import java.util.List;
 
 @Component
@@ -57,10 +56,4 @@ public class LikesDaoImpl implements LikesDao {
                 new Mpa(rs.getLong("MPA_ID"), rs.getString("MPA_NAME")));
     }
 
-    private RowMapper<Like> likesRowMapper() {
-        return (rs, rowNum) -> new Like(
-                rs.getLong("FILMS_ID"),
-                rs.getLong("USER_ID"));
-
-    }
 }
