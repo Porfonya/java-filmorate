@@ -156,7 +156,6 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Set<Genre> getGenres(Long filmId) {
-        log.trace("Получены жанры из фильма {}", filmId);
         return new HashSet<>
                 (jdbcTemplate.query(
                         "SELECT f.GENRE_ID, g.GENRE_NAME FROM FILMS_GENRES AS f " +
