@@ -156,13 +156,13 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Set<Genre> getGenres(Long filmId) {
-        return new HashSet<>
-                (jdbcTemplate.query(
+        Set<Genre> resultGenre = new HashSet<>(
+                jdbcTemplate.query(
                         "SELECT f.GENRE_ID, g.GENRE_NAME FROM FILMS_GENRES AS f " +
                                 "JOIN GENRES AS g ON f.GENRE_ID = g.GENRE_ID " +
                                 "WHERE f.FILMS_ID = ? ORDER BY g.GENRE_ID",
                         new GenreMapper(), filmId));
-
+        return resultGenre;
     }
 
     private RowMapper<Film> filmRowMapper() {
