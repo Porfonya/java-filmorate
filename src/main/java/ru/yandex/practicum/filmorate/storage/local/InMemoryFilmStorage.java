@@ -1,15 +1,18 @@
-package ru.yandex.practicum.filmorate.storage;
+package ru.yandex.practicum.filmorate.storage.local;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.storage.interfaces.FilmStorage;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.TreeSet;
 
 @Component
 @Slf4j
@@ -62,6 +65,26 @@ public class InMemoryFilmStorage implements FilmStorage {
             return films.get(id);
         } else throw new NotFoundException("404");
 
+    }
+
+    @Override
+    public void addGenres(Film film) {
+
+    }
+
+    @Override
+    public void deleteGenres(Film film) {
+
+    }
+
+    @Override
+    public void updateGenres(Film film) {
+
+    }
+
+    @Override
+    public TreeSet<Genre> getGenres(Long filmId) {
+        return null;
     }
 
 }
