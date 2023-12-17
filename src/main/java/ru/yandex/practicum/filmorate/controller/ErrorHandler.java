@@ -11,6 +11,7 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 @RestControllerAdvice
 public class ErrorHandler {
 
+
     @ExceptionHandler
     public ResponseEntity<String> handleValidationException(final ValidationException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

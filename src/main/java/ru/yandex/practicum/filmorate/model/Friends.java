@@ -13,5 +13,8 @@ public class Friends {
     private Long friendId;
     private Boolean isFriendship;
 
-
+    public Friends(Long userId, Long friendId) {
+        this.userId = userId;
+        this.friendId = friendId;
+    }
 }

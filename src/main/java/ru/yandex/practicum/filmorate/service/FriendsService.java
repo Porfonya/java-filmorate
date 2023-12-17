@@ -15,7 +15,7 @@ import java.util.Optional;
 public class FriendsService {
     private final FriendsDaoImpl friendsDaoImpl;
 
-    public void createNewFriend(Long userId, Long friendId) throws NotFoundException {
+    public void createNewFriend(Long userId, Long friendId) {
 
         friendsDaoImpl.addToFriends(userId, friendId);
     }

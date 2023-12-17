@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Friends;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.interfaces.FriendsDao;
@@ -19,15 +20,16 @@ public class FriendsDaoImpl implements FriendsDao {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public void addToFriends(long userId, long friendId) throws NotFoundException {
-        jdbcTemplate.update("INSERT INTO FRIENDS (USER_ID, FRIEND_ID)  VALUES (?, ?)", userId, friendId);
+    public void addToFriends(long userId, long friendId) {
+
+        String sqlQuery = "INSERT INTO FRIENDS (USER_ID, FRIEND_ID)  VALUES (?, ?)";
+        jdbcTemplate.update(sqlQuery, userId, friendId);
     }
 
 
     @Override
     public void removeFromFriend(long userId, long friendId) {
         String sqlQuery = "DELETE FROM FRIENDS WHERE USER_ID = ? AND FRIEND_ID = ?";
-
         jdbcTemplate.update(sqlQuery, userId, friendId);
     }
 

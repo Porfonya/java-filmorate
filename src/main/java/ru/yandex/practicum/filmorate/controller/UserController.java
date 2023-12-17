@@ -2,11 +2,14 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.protocol.HTTP;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Friends;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.FriendsService;
@@ -53,11 +56,11 @@ public class UserController {
 
     @PutMapping(value = "/{id}/friends/{friendId}")
     public void addToFriends(@PathVariable("id") @Valid Long id,
-                             @PathVariable("friendId") @Valid Long friendId) {
-        if (id > 0 && friendId > 0) {
+                                                @PathVariable("friendId") @Valid Long friendId){
+        try {
             friendsService.createNewFriend(id, friendId);
-        } else {
-            throw new NotFoundException("404");
+        }catch (Exception e){
+           throw new ResponseStatusException( HttpStatus.NOT_FOUND, "Данные введены неправильно");
         }
     }
 
